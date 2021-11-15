@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Area of Intersection of Two Circles</title>
+        <!-- <script type="text/javascript" src="https://www.maths.nottingham.ac.uk/plp/pmadw/LaTeXMathML.js"></script> -->
+    </head>
+    <body>
+        <div align="center">
+            <h1 style="font-family: sans-serif; font-size: 45px;">Area of Intersection of Two Circles</h1>
+            <p>11-15-2021</p>
+            <div width="50%" style="font-size: 15px; font-family: sans-serif; text-align: left; display: block; padding: 0 17% 0 17%;">
+                <b>Problem</b>
+                <p>Assume what you have in space, is two circles. We know some key information regarding both circles. We know that both circles overlap/collide with each other. We also know the center positions of both circles, which turns out to be a coordinate vector. What we also know is, the radii of both circles. The radii may, or may not be the same. Calculate the area of intersection/penetration of both circles which can be seen shaded in red below.</p>
+                <img width="40%" style="display: block; margin-left: auto; margin-right: auto; width: 40%;" src="Figure1.JPG" alt="fig." />
+                <br/>
+                <b>Solution</b>
+                <p>We know that both circles overlap each other, from which we incur that the euclidean distance between the centers of the circles is less than the sum of their radii.</p>
+                <img src="eq1.svg" alt="eq1"></img>
+                <p>The distance between the centers can be calculated using the pythagorean theorem.</p>
+                <img src="eq2.svg" alt="eq2"></img>
+                <p>If you look closely, the area of intersection can be divided into two semi-ellipses which together form an ellipse with pointed ends. We could calculate the area of this ellipse which is the complete area of intersection. To do that, we'll require the two radii of the ellipse.</p>
+                <img width="10%" style="display: block; margin-left: auto; margin-right: auto;" src="Figure2.JPG" alt="fig.2"></img>
+                <p>In the figure above, the line in yellow is the depth of the penetration i.e. height of the ellipse. The line in green is the width, divide these by 2 and we get the two required radii! We'll start by calculating the height. We subtract the distance between the centers of the circles from the sum of their radii and then dividing it by 2 to get the the first radius of the ellipse.</p>
+                <img src="eq3.svg" alt="eq3"></img><br/>
+                <img src="eq4.svg" alt="eq4"></img>
+                <p>In order to find the second radius, we'll have to look at this from a different perspective.</p>
+                <img width="40%" style="display: block; margin-left: auto; margin-right: auto; width: 40%;" src="Figure3.JPG" alt="fig." />
+                <p>Essentially, if we join the centers of both circles with 1 of the intersection points, and join the centers. We observe that a triangle is formed. Subsequently the sides of the triangle will be the radius of the first circle, the radius of the second circle and the distance between the center positions. We can use this information to find the area of this triangle using Heron's formula and then calculate its height since we already have its base!</p>
+                <img src="eq5.svg" alt="eq5"></img><br/>
+                <img src="eq6.svg" alt="eq6"></img><br/>
+                <img src="eq7.svg" alt="eq7"></img>
+                <p>The height of this triangle is the second radius of the ellipse. Now that we have our required information, we calculate the area of the ellipse resulting in the area of intersection of the two circles.</p>
+                <img src="eq9.svg" alt="eq9"></img>
+                <br/>
+                <br/>
+                <hr/>
+                <br/>
+                <br/>
+            </div>
+        </div>
+    </body>
+</html>
