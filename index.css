@@ -169,3 +169,13 @@ body {
     color: #18A999; 
     margin-left: 0px;
 }
+
+.tech {
+    display: flex; 
+    margin: auto; 
+    width: 29em;
+}
+
+@media (max-width: calc(18em * 3)) {
+    .tech { width: calc(20em) }
+}
