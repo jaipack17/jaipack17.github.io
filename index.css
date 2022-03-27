@@ -206,3 +206,19 @@ body {
     background-color: white;
     transition: all .3s linear;
 }
+
+.new-tag {
+    position: relative;
+    transform: rotate(25deg);
+    margin-left: 80%;
+    margin-top: -16%;
+    z-index: 2;
+    width: 50px;
+    height: 20px;
+    padding-bottom: 4px;
+    text-align: center;
+    color: white;
+    font-weight: 550;
+    background-color: #ff5555;
+    border-radius: 6px;
+}
