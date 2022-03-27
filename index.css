@@ -207,6 +207,16 @@ body {
     transition: all .3s linear;
 }
 
+@keyframes catch-attention {
+    0% {transform: rotate(25deg);}
+    3% {transform: rotate(15deg);}
+    6% {transform: rotate(35deg);}
+    9% {transform: rotate(15deg);}
+    12% {transform: rotate(35deg);}
+    15% {transform: rotate(25deg);}
+    100% {transform: rotate(25deg);}
+}
+
 .new-tag {
     position: relative;
     transform: rotate(25deg);
@@ -221,4 +231,8 @@ body {
     font-weight: 570;
     background-color: #ff5555;
     border-radius: 6px;
+    animation-name: catch-attention;
+    animation-duration: 5s;
+    animation-delay: 4s;
+    animation-iteration-count: infinite;
 }
