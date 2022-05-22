@@ -1,0 +1,26 @@
+{
+  "name": "jaipack17.github.io",
+  "version": "1.0.0",
+  "main": "voyage.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gen": "node tools/genhtml.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaipack17/jaipack17.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaipack17/jaipack17.github.io/issues"
+  },
+  "homepage": "https://github.com/jaipack17/jaipack17.github.io#readme",
+  "description": "",
+  "dependencies": {
+    "highlight.js": "^11.5.0",
+    "jquery": "^3.6.0",
+    "markdown-it": "^12.3.2"
+  }
+}

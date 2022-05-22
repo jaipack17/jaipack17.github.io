@@ -10,3 +10,65 @@
     background-image: url("voyage-background.png");
     background-repeat: no-repeat;
 }
+
+.blogs-list {
+    margin: auto;
+    width: 90%;
+    max-width: 700px;
+}
+
+.blog-card {
+    width: 100%;
+    height: fit-content;
+    cursor: pointer;
+}
+
+.blog-card-author {
+    color: black;
+    opacity: .4;
+    font-weight: 700;
+    margin: auto;
+    margin-left: 0;
+    text-align: left;
+    font-size: large;
+}
+
+.blog-card-header {
+    color: black;
+    margin-left: 0;
+    margin-top: 1%;
+    text-align: left;
+    font-size: 2em;
+}
+
+.blog-card-description {
+    color: black;
+    margin-left: 0;
+    margin-top: -1.5%;
+    text-align: left;
+    font-size: 1em;
+}
+
+.blog-card-tags {
+    max-width: 100%;
+    margin-left: 0%;
+    display: flex;
+    align-content: flex-start;
+    flex-direction: row;
+}
+
+.tag {
+    text-align: center; 
+    color:white;
+    background-color: #18A999;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    border-radius: 6em;
+    width: fit-content;
+    font-size: .8em;
+    margin-right: .3em;
+}
+
+hr { opacity: .4; }
