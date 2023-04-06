@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head><link href="../index.css" rel="stylesheet" type="text/css" /><link href="../blog-stylesheet.css" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/xcode.min.css" /><link rel="preconnect" href="https://fonts.gstatic.com" /><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet" /><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400&display=swap" rel="stylesheet" /></head>    <body><br/>
+        <div class="blog-container" align="center">
+        <a href="../voyage.html" style+"text-decoration: none">← Back</a>
+        <h1>Trusses in Nature2D</h1>
+<p>Exploring trusses to make bridges and towers in Nature2D</p>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#bridges">Bridges</a></li>
+<li><a href="#hydraulics">Hydraulics</a></li>
+<li><a href="#towers">Towers</a></li>
+</ul>
+<h2 id="overview">Overview</h2>
+<p>The last week I spent some time trying to create rigid structures like bridges, towers and cranes with constraints in <a href="https://github.com/jaipack17/Nature2D">Nature2D</a>, my physics library. I also further went on implementing hydraulics.</p>
+<p>The idea was to create nodes, each connected by different beams that connect different nodes together to form a rigid framework. Initially I tried making a Polybridge clone, but gradually shifted away from bridges to a variety of structures.</p>
+<p>I started off with a few red coloured nodes on the canvas that would act as “anchors”, they do not move at all and allow being connected to other nodes. These nodes are points created with <code>Engine:Create()</code>. Soon I got the sandbox ready, clicking these anchored nodes would allow me to create new nodes 100 pixels away from the anchored node, which would then be interconnected with a rod constraint. Nodes created in this way can also be clicked to create new nodes in different directions. Two existing nodes can also be connected together this way. The angle at which the new node is created is limited to multiples of 15. Here are the important snippets of the code besides user input.</p>
+<pre><code class="language-lua"><span class="hljs-keyword">local</span> Nodes = {}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Node</span><span class="hljs-params">(p)</span></span>
+    <span class="hljs-keyword">local</span> n = Engine:Create(<span class="hljs-string">&quot;Point&quot;</span>, {
+		Position = p,
+		Snap = <span class="hljs-literal">true</span>,
+		Radius = <span class="hljs-number">10</span>,
+		Color = Color3.new(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>),
+		Visible = <span class="hljs-literal">true</span>
+	})
+
+	<span class="hljs-built_in">table</span>.<span class="hljs-built_in">insert</span>(Nodes, n)
+	<span class="hljs-keyword">return</span> n
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">-- Creating the rod constraint once we have both the node that we clicked </span>
+<span class="hljs-comment">-- and the new node that was created</span>
+<span class="hljs-keyword">local</span> rod = Engine:Create(<span class="hljs-string">&quot;Constraint&quot;</span>, {
+    Type = <span class="hljs-string">&quot;Rod&quot;</span>,
+    Point1 = previousNode, <span class="hljs-comment">-- the node that was clicked</span>
+    Point2 = currentNode, <span class="hljs-comment">-- new node</span>
+    Color = color,
+    Thickness = <span class="hljs-number">8</span>,
+    Visible = <span class="hljs-literal">true</span>
+})
+
+<span class="hljs-comment">-- Limiting the angle at which new node is created to multiples of 15</span>
+<span class="hljs-keyword">local</span> mouse = game:GetService(<span class="hljs-string">&quot;UserInputService&quot;</span>):GetMouseLocation()
+<span class="hljs-comment">-- currentNode is the node that was clicked</span>
+<span class="hljs-keyword">local</span> currentRotation = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">deg</span>(<span class="hljs-built_in">math</span>.<span class="hljs-built_in">atan2</span>(mouse.Y - currentNode.pos.Y, mouse.X - currentNode.pos.X))  
+<span class="hljs-keyword">local</span> targetRotation
+
+<span class="hljs-keyword">if</span> currentRotation &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span>
+    targetRotation = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">ceil</span>(currentRotation/<span class="hljs-number">15.0</span>) * <span class="hljs-number">15</span>
+<span class="hljs-keyword">elseif</span> <span class="hljs-built_in">math</span>.<span class="hljs-built_in">abs</span>(currentRotation) &lt; <span class="hljs-number">7.5</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">math</span>.<span class="hljs-built_in">abs</span>(currentRotation) &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">then</span>
+    targetRotation = <span class="hljs-number">0</span>
+<span class="hljs-keyword">elseif</span> currentRotation &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span>
+    targetRotation = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">floor</span>(currentRotation/<span class="hljs-number">15.0</span>) * <span class="hljs-number">15</span>
+<span class="hljs-keyword">end</span>
+
+targetRotation = <span class="hljs-built_in">math</span>.<span class="hljs-built_in">rad</span>(targetRotation)
+
+<span class="hljs-keyword">local</span> r = <span class="hljs-number">100</span>
+<span class="hljs-keyword">local</span> location = Vector2.new(
+    currentNode.pos.X + (<span class="hljs-built_in">math</span>.<span class="hljs-built_in">cos</span>(targetRotation) * r), 
+    currentNode.pos.Y + (<span class="hljs-built_in">math</span>.<span class="hljs-built_in">sin</span>(targetRotation) * r)
+)
+
+<span class="hljs-comment">-- Creating a new node</span>
+Node(location)
+</code></pre>
+<p>Initially the nodes are anchored, which means that the rod constraints do not move. However, when these nodes are unanchored, the rod contraints hold these nodes together in place giving a rigid structure. Note that anchors (red nodes) are never unanchored. In action:</p>
+<video controls="" autoplay="" name="media" width="60%">
+    <source src="https://i.imgur.com/TjDLOWn.mp4" type="video/mp4">
+</video>
+<h2 id="bridges">Bridges</h2>
+<p>Coming onto bridges, I started with two tools - rods and roads. My idea was to make these roads collidable and have rods act just like roads but not collide with any other object, just like polybridge! However this failed due to the peculiar object inheritance system in Nature2D which surely needs a big rework, so ultimately rods and roads are just there for aesthetic reasons :P. Brown constraints are roads and yellow ones are rods that hold everything together.</p>
+<p>Here are some interesting bridges:</p>
+<video controls="" autoplay="" name="media" width="60%">
+    <source src="https://i.imgur.com/f8gzc2n.mp4" type="video/mp4">
+</video>
+<p>Tower Bridge in London</p>
+<video controls="" autoplay="" name="media" width="60%">
+    <source src="https://i.imgur.com/vfMPNEl.mp4" type="video/mp4">
+</video>
+<p>Golden Gate Bridge</p>
+<video controls="" autoplay="" name="media" width="60%">
+    <source src="https://i.imgur.com/2R4EpuP.mp4" type="video/mp4">
+</video>
+<h2 id="hydraulics">Hydraulics</h2>
+<p>I went on adding basic hydraulics mechanism to the sandbox! Represented by blue rod constraints, they have the ability to become longer or shorter with time. I accomplished this by changing the <code>restLength</code> property of Nature2D constraints each frame by a certain amount until the target amount was achieved.</p>
+<pre><code class="language-lua"><span class="hljs-keyword">local</span> step = <span class="hljs-number">0.5</span> <span class="hljs-comment">-- can be changed to -ve as well</span>
+<span class="hljs-keyword">local</span> <span class="hljs-built_in">max</span> = <span class="hljs-number">150</span>
+
+<span class="hljs-comment">-- initialL represents the initial lengths of all hydraulic constraints</span>
+<span class="hljs-keyword">for</span> i, h <span class="hljs-keyword">in</span> <span class="hljs-built_in">ipairs</span>(Hydraulics) <span class="hljs-keyword">do</span>
+    h:SetLength(<span class="hljs-built_in">math</span>.clamp(h.restLength + step, <span class="hljs-number">0</span>, initialL[i] + <span class="hljs-built_in">max</span>))
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>Here’s a bridge that’s meant for ships to pass through underneath. The bridge separates when the hydraulics start working.</p>
+<video controls="" autoplay="" name="media" width="60%">
+    <source src="https://i.imgur.com/zaaJDmB.mp4" type="video/mp4">
+</video>
+<h2 id="towers">Towers</h2>
+<p>I also tried to build some other kinds of rigid structures, like towers! Here’s the Eiffel Tower made with Nature2D constraints! The constraints hold up quite well together.</p>
+<video controls="" autoplay="tue" name="media" width="60%" loop="true">
+    <source src="https://i.imgur.com/aQ5cTsC.mp4" type="video/mp4">
+</video>
+<p>It was quite fun to work on this and has given me a lot of new ideas on how I can improve Nature2D. <a href="https://www.youtube.com/watch?v=oulfRfqTxJA&amp;ab_channel=AngeTheGreat">This</a> video by AngeTheGreat has also inspired me to create visualisations of tension and compression on each constraint of the truss. But that’s for later. Until next time!</p>
+<p><br/><br/><br/></p>
+
+        </div></body></html>

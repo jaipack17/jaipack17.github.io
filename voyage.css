@@ -41,6 +41,10 @@
     font-size: 2em;
 }
 
+.blog-card-header:hover {
+    text-decoration: underline;
+}
+
 .blog-card-description {
     color: black;
     margin-left: 0;
