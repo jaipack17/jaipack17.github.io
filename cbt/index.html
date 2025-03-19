@@ -1,0 +1,26 @@
+<html>
+<title>Nicum CBT Tool (Beta Re-write)</title>
+
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Rubik Glitch' rel='stylesheet'>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./script.js"></script>
+</head>
+
+<body>
+    <h1>CBT Test</h1>
+    <div id="work-area">
+        <fieldset>
+            <legend>Enter the details of the test</legend>
+            <span class="instruction-text">Enter the number of questions : </span><input class="instruction" type="number" min="1"
+                id="question-count"> <br>
+            <span class="instruction-text">Enter the number of minutes the exam lasts : </span><input class="instruction" type="number"
+                min="1" id="time"> <br>
+            <span class="instruction-text">Enter the name of the exam : </span><input class="instruction" type="text" id="exam-name"> <br>
+            <button id="exam-detail-submit" class="button" onclick="testFormat()">Proceed</button>
+        </fieldset>
+    </div>
+    <div id="timer">Time Remaining: <span style="background-color: rgb(1, 177, 101);" id="time">--:--</span></div>
+</body>
+
+</html>
